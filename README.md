@@ -1,1 +1,1 @@
-# Hedgebot
+# HedgeBot
