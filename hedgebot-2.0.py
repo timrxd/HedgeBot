@@ -21,6 +21,7 @@ import functools
 import itertools
 import math
 import random
+import os
 from sys import prefix
 
 import discord
@@ -504,6 +505,7 @@ class Music(commands.Cog):
                 song = Song(source)
 
                 await ctx.voice_state.songs.put(song)
+                print('Queued {}'.format(str(source)))
                 await ctx.send('Queued {}'.format(str(source)))
 
     @_join.before_invoke
@@ -517,7 +519,9 @@ class Music(commands.Cog):
                 raise commands.CommandError('Bot is already in a voice channel.')
 
 
-bot = commands.Bot('!', description='Yet another music bot.')
+intents = discord.Intents.default()
+# client = discord.Client(intents=intents)
+bot = commands.Bot('!', description='Yet another music bot.', intents=intents)
 bot.add_cog(Music(bot))
 
 
@@ -525,5 +529,5 @@ bot.add_cog(Music(bot))
 async def on_ready():
     print('Logged in as:\n{0.user.name}\n{0.user.id}'.format(bot))
 
-TOKEN = open("token.txt", "r").readline()
+TOKEN = os.getenv('HEDGEBOT_TOKEN')
 bot.run(TOKEN)
